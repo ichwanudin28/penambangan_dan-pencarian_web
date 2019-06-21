@@ -71,7 +71,7 @@
 <p>Data yang telah diolah akan berubah menjadi sebuah informasi yang dapat digunakan untuk menambah pengetahuan bagi yang menerimanya. Maka dalam hal ini data dapat dianggap sebagai obyek dan informasi adalah suatu subyek yang bermanfaat bagi penerimanya. Informasi juga bisa disebut sebagai hasil pengolahan ataupun pemrosesan data.</p>
 <p>Oleh karena itu artikel ini akan membahas tutorial untuk mengolah data yang diperoleh dari <em>crawling web</em> sehingga diperoleh suatu informasi. Data yang didapat dari proses crawl akan diolah menggunakan metode <em>Fuzzy C-Means</em> untuk melakukan cluster pada data dan <em>Silhouette Coefficient</em> digunakan untuk menguji kualitas cluster yang diperoleh. Hasil akhir yang ingin dicapai pada artikel ini adalah membandingkan jumlah cluster sehingga mendapatkan jumlah cluster yang efiseien dan berkualitas berdasarkan perolehan skor dari <em>Silhouette Coefficient</em>. Selain itu pada tutorial ini juga terdapat proses <em>Feature Selection</em> untuk mengurangi jumlah fitur agar tidak memakan waktu komputasi yang banyak. Algoritma yang digunakan pada proses ini adalah <em>Drop High Correlation</em>, algortima ini digunakan untuk menghindari membuang fitur yang memiliki informasi yang diperlukan karena algoritma ini melakukan proses korelasi matrik untuk mengetahui fitur mana yang tidak memiliki korelasi dengan fitur yang lainnya. Sehingga algoritma ini dapat mencegah membuang fitur yang penting.</p>
 <h2 id="step-1-installing">Step 1. Installing</h2>
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\pylogo.png" /></p>
+<p><img alt="" src="img\pylogo.png" /></p>
 <p>Dalam tutorial ini semua proses akan dibangun menggunakan bahasa pemograman <em>Python</em>. Alasan mengapa <em>author</em> menggunakan bahasa pemograman ini karena <em>Python</em> merupakan bahasa pemograman yang populer akhir-akhir ini, selain itu <em>Python</em> menyediakan banyak <em>library</em>yang mudah digunakan dalam membangun suatu sistem. Adapun <em>library</em> yang digunakan akan dijelaskan pada setiap stepnya.</p>
 <p>Panduan instalasi python dapat teman-teman baca<a href="https://realpython.com/installing-python/">disini</a></p>
 <p>Panduan instalasi library atau package dapat teman-teman <a href="https://datatofish.com/install-package-python-using-pip/">disini</a></p>
@@ -100,9 +100,9 @@ import requests
 <pre><code>&gt;&gt; Menentukan berita yang akan diambil dari halaman web
 </code></pre>
 
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\home.png" /></p>
+<p><img alt="" src="img\home.png" /></p>
 <p>Berita yang akan  diambil adalah yang terletak di panel tengah pada list berita terkini, berita ini merupakan berita yang diupload tiap hari.</p>
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\inspek.png" /></p>
+<p><img alt="" src="img\inspek.png" /></p>
 <p>Untuk dapat mengakses tag html dari list berita tersebut, dapat dilakukan dengan <em>inspect element</em>, yakni dengan cara :</p>
 <ol>
 <li>
@@ -115,7 +115,7 @@ import requests
 <p>maka akan muncul panel <em>inspect</em> di jendela sebelah kanan</p>
 </li>
 </ol>
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\inspek elemen.png" /></p>
+<p><img alt="" src="img\inspek elemen.png" /></p>
 <p>Selanjutnya pada panel <em>inspect</em>, cari tag html yang memuat list berita pada halaman web. Biasanya list berita memiliki nama <em>class</em> yang sama pada setiap berita. Pada halaman web diatas contohnya adalah <em>class</em> <code>item-outer</code>.</p>
 <pre><code>news_links = soup.find_all(&quot;div&quot;,{'class':'vel-frame-post-block'})
 </code></pre>
@@ -123,7 +123,7 @@ import requests
 <pre><code>&gt;&gt;Mendapatkan judul dan alamat web dari isi artikel
 </code></pre>
 
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\inspek judul.png" /></p>
+<p><img alt="" src="img\inspek judul.png" /></p>
 <p>Setelah tag html list berita telah diperoleh, selanjutnya adalah mencari tag html yang memuat judul dan link dari judul tersebut. Hal ini dilakukan agar menelusuri isi dari setiap list berita yang terdapat pada halaman tersebut. Biasanya tag html yang memuat link terdapat attribut <code>href</code>.</p>
 <p>Dari list berita tersebut, jika ditelusuri lebih mendalam tag html yang memuat link berita memiliki <em>class</em> <code>ellipsis2</code>.</p>
 <pre><code class="python">for idx,news in enumerate(news_links):
@@ -146,7 +146,7 @@ soup_news = BeautifulSoup(req_news.text, &quot;lxml&quot;)
 <pre><code>&gt;&gt; Mendapatkan isi artikel pada berita
 </code></pre>
 
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\entry konten.png" /></p>
+<p><img alt="" src="img\entry konten.png" /></p>
 <p>Sama seperti langkah sebelumnya, yang harus dilakukan selanjutnya adalah melakukan <em>Inspect</em>pada salah satu berita kemudiah mancari tag html yang mengandung isi dari berita tersebut.</p>
 <pre><code class="python">#find news content 
 news_content = soup_news.find(&quot;div&quot;,{'class':'entry-content'})
@@ -197,7 +197,7 @@ crawl  = crawl_lintasperistiwa(url)
 </code></pre>
 
 <h4 id="hasil">Hasil</h4>
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\excelcrawling.png" /> </p>
+<p><img alt="" src="img\excelcrawling.png" /> </p>
 <p>Jika teman-teman membutuhkan contoh serupa dengan studi kasus yang berbeda, silahkan <a href="https://medium.com/@adamaulia/python-simple-crawling-using-beautifulsoup-8247657c2de5">baca</a></p>
 <h2 id="step-3-preprocessing">Step 3. Preprocessing</h2>
 <h3 id="apa-itu-text-preprocessing">Apa itu <em>Text Preprocessing</em> ?</h3>
@@ -330,7 +330,7 @@ import numpy as np
 <pre><code>&gt;&gt; Membuat korelasi matriks
 </code></pre>
 
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\matrix.png" /></p>
+<p><img alt="" src="img\matrix.png" /></p>
 <p>Dari matriks korelasi ini dapat dilihat bahwa pada bagian diagonal, nilainya pasti = 1 sebab variabel tersebut berkorelasi sempurna positif dengan dirinya sendiri. Nilai korelasi antara pasangan variabel pada set data1 dan data2, menunjukkan nilai dalam range -1 dan 1. Ini disebabkan oleh standarisasi menggunakan standar deviasi sebagai pembagi pada saat perhitungan hasil korelasinya.</p>
 <pre><code class="python">corr_matrix = df.corr().abs()
 </code></pre>
@@ -489,7 +489,7 @@ for i in range(len(data5)):
 woorkbook.save('VSM.xlsx')
 </code></pre>
 
-<p><img alt="" src="D:\semester 8\penambangan web\gambar\excelvsm.png" /></p>
+<p><img alt="" src="img\excelvsm.png" /></p>
 <p>Sehingga <code>vsm</code> dan <code>collecting_fiture</code> digunakan sebagai input <code>drop_highly_correlation</code>.</p>
 <pre><code class="python">#Uni Gram
 vsm =  load_list(&quot;vsm&quot;)
